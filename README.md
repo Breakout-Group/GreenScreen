@@ -1,5 +1,4 @@
-Unit 8: Group Milestone
-===
+
 
 # GreenScreen
 
@@ -74,3 +73,43 @@ Any individual could choose to use this app, the main target group is for indivi
 ## Wireframes
 <img src="https://i.imgur.com/YpvqCCN.jpg" width=800><br>
 
+
+## Schema 
+### Models
+#### Post
+
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | userId        | String   | unique username for the user|
+   | password        | String| password of the account |
+   | scoreCount       | Number     | score the user has achieved |
+
+
+
+### Networking
+#### List of network requests by screen
+   - Log In Screen
+       - (Read/Get) User's credentials
+       - (Create/POST) New users' credentials
+   - Main Screen
+      - (Create/POST) Users input their desired amount of time
+   - Profile Screen
+      - Add friends
+      - (Update/PUT) Update user profile image 
+   - Work Screen
+       - (Read/GET) Countdown timer
+   - Leaderboard
+       - (Read/GET) Amount of time user's friends has accomplished  
+       - (Read/GET) Query all scores where user is author
+         ```swift
+         let query = PFQuery(className:"Leaderboard")
+         query.whereKey("author", equalTo: currentUser)
+         query.order(byDescending: "createdAt")
+         query.findObjectsInBackground { (scores: [PFObject]?, error: Error?) in
+            if let error = error { 
+               print(error.localizedDescription)
+            } else if let scores = scores {
+               print("Successfully retrieved \(scores.count) posts.")
+           // TODO: Do something with posts...
+            }
+         }
